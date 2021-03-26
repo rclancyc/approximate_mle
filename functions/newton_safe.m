@@ -26,7 +26,7 @@ function myroot = newton_safe(f, df, a, b)
     it = 0;
     ft = f(t);
     dft = df(t); 
-    while norm(ft, 'Inf') > tol && it < maxit
+    while norm(ft, inf) > tol && it < maxit
         it = it + 1;                                       
         [a,b] = bisect_interval(f,a,b);     % bracket interval each time to ensure progress
         t = t - ft./dft;                    % take newton step               
