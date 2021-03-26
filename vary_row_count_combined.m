@@ -6,7 +6,7 @@ opts.Display = 'off';
 opts.Verbose = 'on';
 
 % set number of simulations, columns, and rows to use
-n_sims = 5;        
+n_sims = 1000;        
 N = 20;             
 ms = round(logspace(log10(N),log10(N)+2,11));
 M = max(ms);            % Max number of rows
@@ -38,7 +38,7 @@ for model = 1:4
     fprintf('For %i %s simulations for %i column matrices \n', n_sims, model_names{model}, N); 
     for i = 1:n_sims
         % set seed for each simulation
-        rng(i+500);
+        rng(i);
 
         % generate true solution from which data is generated
         u = rand(N, 1);
@@ -49,25 +49,21 @@ for model = 1:4
         sigma = 0.1;
         switch model
             case 1 % exponential clipping
-                %sigma = 1;    % standard deviation of noise on RHS
-                lambda = 2;     % exponential of rate lambda has mean 1/lambda
-                gamma = 2;      % smaller means clipped occurs sooner                
+                lambda = 2;         % exponential of rate lambda has mean 1/lambda
+                gamma = 2;          % smaller means clipped occurs sooner                
                 U = rand(M,N);
                 G = -(1/lambda)*log(1 - U).*sign(randn(M,N));
                 H = sign(G).*min(abs(G),gamma);
             case 2 % gaussian
-                %sigma = 1;    % standard deviation of noise on RHS
-                rho = 2;        % standard deviation of Gaussian noise for design matrix
+                rho = 2;            % standard deviation of Gaussian noise for design matrix
                 H = 10*(randn(M,N));
                 G = H + rho*randn(M,N);
             case 3 % rounding
-                %sigma = 1;
                 rtd = 0;            % round to digit, 0 is ones spot, 1 is tenths, etc
                 c = 0.5*10^(-rtd);  % uncertainty parameter, i.e. g ~ unif(h - c, h + c)
                 G = 10*(rand(M,N)); 
                 H = round(G,rtd);
             case 4 % floating point
-                %sigma = 1;
                 sig_figs = 2;       % number of significant figures to use
                 dyn_range = 3;      % large dyn_range increases variability of exponents for design                
                 G = randn(M,N).*10.^(randi([0,dyn_range], M,N));
@@ -100,9 +96,10 @@ for model = 1:4
         end
         
         % main loop, each ii is new instance of experiment
-        for ii = 1:n_sims     
+        for ii = 1:n_sims  
+            
             % retrieve desired simulation run and take desired number of rows
-            xtrue = true_solution_array{ii}(1:N); 
+            xtrue = true_solution_array{ii}; 
             y = rhs_array{ii}(1:m);
             H = H_array{ii}(1:m,:);
             G = G_array{ii}(1:m,:);
@@ -124,8 +121,7 @@ for model = 1:4
                     neg_L =@(z) float_neg_loglikelihood(y, H, z, D, sigma);
             end
 
-            % initialize to OLS solution
-            %x0 = randn(N,1);
+            % initialize to OLS solution and solve approx. MLE
             x0 = xols;
             xmle = minFunc(neg_L,x0,opts);
 
@@ -147,9 +143,11 @@ for model = 1:4
         toc 
     end
     
-    save_string = strcat('data/',model_names{model}, '.mat');
+    % save all simulation data to avoid rerunning
+    save_string = strcat('data/vary_rows_',model_names{model}, '.mat');
     save(save_string)
     
+    % generate arrays for plots later 
     median_error_array(:, 1, model) = median(xmle_error);
     median_error_array(:, 2, model) = median(xols_error);
     median_error_array(:, 3, model) = median(xtls_error);
@@ -160,36 +158,9 @@ for model = 1:4
     
 end
 
-save('data/error_array.mat', 'mean_error_array', 'median_error_array')
-
+% save data for plots
+save('data/vary_rows_error_array.mat', 'mean_error_array', ...
+    'median_error_array','ms', 'N','model_names')
 %%
 
-figure()
-sgtitle(strcat('Mean relative error vs. row/column ratio'),  'Interpreter','latex', 'FontSize',18)
-for model = 1:4
-    % remove the following before pushing to github
-    subplot(2,2,model)
-    co = colorOrder( 'highcontrast');
-    set(groot,'defaultAxesColorOrder',co); set(gca,'defaultAxesColorOrder',co); set( gca, 'ColorOrder', co );
-    
-    abc = loglog(ms/N, squeeze(median_error_array(:,:,model)), 'Marker', 's', 'LineWidth', 3);
-    ax = gca;
-    set(ax, 'FontSize', 12)
-    title(model_names{model}, 'Interpreter','latex', 'FontSize',16);
-    if model == 1 || model == 3
-        ylabel('Median rel. error','Interpreter','latex', 'FontSize',16);
-    end
-    if model == 3 || model == 4 %[3,4]
-        xlabel('$m/n$', 'Interpreter','latex', 'FontSize',16);
-    end
-    if model == 2
-        legend({'AML (proposed)','OLS','TLS'}, 'Interpreter','latex', 'FontSize',12);
-        legend boxoff
-    end
-    abc(1).LineStyle = '-'; abc(1).LineWidth = 3; abc(1).Marker = 'o'; abc(1).MarkerSize = 10;
-    abc(2).LineStyle = '--'; abc(2).LineWidth = 3; abc(2).Marker = 'x'; abc(2).MarkerSize = 10;
-    abc(3).LineStyle = ':'; abc(3).LineWidth = 3; abc(3).Marker = '+'; abc(3).MarkerSize = 10;
-    grid on
-end
-
-set(gcf, 'color', 'w')
+plot_vary_by_rows_combined

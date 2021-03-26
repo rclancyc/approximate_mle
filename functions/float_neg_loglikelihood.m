@@ -3,8 +3,8 @@ function [f,g] = float_neg_loglikelihood(y, H, x, D, sigma)
     q =@(z) sigma^2*z + H*x + (D.*coth(D.*(z*x')))*x - n*ones(m,1)./z - y;
     qp=@(z) sigma^2*ones(m,1) - ((D.*csch(D.*(z*x'))).^2)*(x.^2) + n./(z.^2);
     
-    a = -1e5*ones(m,1)+1e-5;
-    b = 1e5*ones(m,1);
+    a = -1e6*ones(m,1)+1e-3;
+    b = 1e6*ones(m,1);
     
     t = newton_safe(q, qp, a, b);
     
