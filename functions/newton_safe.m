@@ -50,7 +50,7 @@ function myroot = newton_safe(f, df, a0, b0)
             b0 = b;
             num_exp = num_exp + 1;
             if num_exp > max_num_exp
-                fprintf('Newton Safe failed to converge below tolerance, simulated instance should be discarded \n')
+                fprintf('Newton Safe violates tolerance of %d. ||f(t)|| = %d \n', tol, norm(ft, inf))
                 root_found = true;
             else
                 t = 0.5*(a+b) + randn(size(t));
