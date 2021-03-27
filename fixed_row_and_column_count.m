@@ -1,5 +1,5 @@
 clear;
-%addpath('functions')
+addpath('functions')
 
 opts.Display = 'off';
 opts.Verbose = 'on';
