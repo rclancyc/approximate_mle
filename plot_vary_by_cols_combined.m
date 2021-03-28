@@ -34,7 +34,7 @@ for model = 1:4
         ylabel('Rel. error','Interpreter','latex', 'FontSize',16);
     end
     if model == 3 || model == 4 %[3,4]
-        xlabel('$m/n$', 'Interpreter','latex', 'FontSize',16);
+        xlabel('$n$', 'Interpreter','latex', 'FontSize',16);
     end
     if model == 2
         legend({'AMLE (proposed)','OLS','TLS'}, 'Interpreter','latex', ...

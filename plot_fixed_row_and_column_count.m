@@ -25,7 +25,7 @@ for model = 1:4
     end
 
     ax.YAxis.Scale ="log";
-    %ax.YLim = [1e-3 1e1];
+    ax.YLim = [1e-3 1e1];
     grid on
 end
 set(gcf,'color','w')
@@ -40,6 +40,7 @@ set(gcf,'color','w')
 %%
 figure();
 
+newLimHi = 0;
 chart_names = {'Exp clip', 'Gaussian', 'Rounding', 'Floating'};
 sgtitle('Histogram of error ratios', 'Interpreter','latex', 'FontSize', 16)
 for model = 1:4
@@ -49,11 +50,11 @@ for model = 1:4
     minbin = min(min(mle_ols), min(mle_tls));
     maxbin = max(max(mle_ols), max(mle_tls));
     nbins = 75;
-    bins = logspace(-1, log10(10), nbins);
+    bins = logspace(-2, 1, nbins);
     subplot(4,2,2*(model-1)+1)
     h1 = histogram(mle_ols, bins,'Normalization', 'count');
     set(gca, 'Xscale', 'log','FontSize',12, 'YTickLabel',[]);
-    xlim([1e-1 10])
+    xlim([1e-2 1e1])
     ylabel(chart_names{model}, 'Interpreter','latex', 'FontSize', 16);
     grid on
     if 2*(model-1)+1 == 1
@@ -62,14 +63,15 @@ for model = 1:4
     if 2*(model-1)+1 ~=7
         set(gca, 'XTickLabel',[]);
     end
+    hold on;
 
     subplot(4,2,2*model)
     h2 = histogram(mle_tls,bins,'Normalization', 'count');
-    set(gca, 'Xscale', 'log','FontSize',12, 'YTickLabel',[]);
+    set(gca, 'Xscale', 'log','FontSize',11, 'YTickLabel',[]);
     
-    xlim([1e-1 10])
+    xlim([1e-2 1e1])
     newLimLo = min(h1.Parent.YLim(1),h2.Parent.YLim(1));
-    newLimHi = max(h1.Parent.YLim(2),h2.Parent.YLim(2));
+    newLimHi = max([h1.Parent.YLim(2),h2.Parent.YLim(2), newLimHi]);
     grid on
     h1.Parent.YLim = [newLimLo newLimHi];
     h2.Parent.YLim = [newLimLo newLimHi];
@@ -80,11 +82,18 @@ for model = 1:4
     if 2*model ~=8
         set(gca, 'XTickLabel',[]);
     end
+    hold on;
+end
 
+for k = 1:4
+    subplot(4,2,2*(k-1)+1); ylim([newLimLo 1500]); 
+    plot([1, 1], [0, 1500], 'LineWidth',1.5, 'color', 'red')
+    subplot(4,2,2*k); ylim([newLimLo 1000]); 
+    plot([1 1], [0 1500],'LineWidth',1.5, 'color', 'red')
+    %subplot(4,2,2*(k-1)+1); ylim([newLimLo newLimHi]);
+    %subplot(4,2,2*k); ylim([newLimLo newLimHi]);
+    
 end
 
 set(gcf,'color','w')
-
-
-
 
