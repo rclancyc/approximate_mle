@@ -1,7 +1,7 @@
-if ~exist('median_error_array','var')
-    load('data/vary_rows_error_array.mat')
-end
+clear
+load('data/vary_rows_error_array.mat')
 
+%use_avg = 'Mean';
 use_avg = 'Median';
 
 if strcmp(use_avg, 'Median')
@@ -34,7 +34,7 @@ for model = 1:4
         xlabel('$m/n$', 'Interpreter','latex', 'FontSize',16);
     end
     if model == 2
-        legend({'AMLE (proposed)','OLS','TLS'}, 'Interpreter','latex', 'FontSize',12);
+        legend({'AML (proposed)','OLS','TLS'}, 'Interpreter','latex', 'FontSize',12);
         legend boxoff
     end
     abc(1).LineStyle = '-'; abc(1).LineWidth = 3; abc(1).Marker = 'o'; abc(1).MarkerSize = 10;

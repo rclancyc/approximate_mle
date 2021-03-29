@@ -43,8 +43,6 @@ for model = 1:4
         % generate true solution from which data is generated
         u = rand(N, 1);
         xtrue = tan(pi*(u-0.5));
-        %xtrue = randn(N,1);%-0.5;
-        %xtrue = xtrue/norm(xtrue);
 
         sigma = 0.1;
         switch model

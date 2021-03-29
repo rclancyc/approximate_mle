@@ -37,7 +37,7 @@ for model = 1:4
         xlabel('$n$', 'Interpreter','latex', 'FontSize',16);
     end
     if model == 2
-        legend({'AMLE (proposed)','OLS','TLS'}, 'Interpreter','latex', ...
+        legend({'AML (proposed)','OLS','TLS'}, 'Interpreter','latex', ...
             'FontSize',12, 'Location', 'northwest');
         legend boxoff
     end

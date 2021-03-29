@@ -6,18 +6,13 @@ end
 figure()
 if exist('colorOrder')
     co = colorOrder( 'highcontrast');
-    %set(groot,'defaultAxesColorOrder',co); 
-    %set(gca,'defaultAxesColorOrder',co); 
     set( gca, 'ColorOrder', co );
 end
-%sgtitle('Box plots for relative error $\frac{\|\mathbf{x}_{EST} - \mathbf{x}_{TRU}\|}{\|\mathbf{x}_{TRU}\|}$',  'Interpreter','latex', 'FontSize',16)
 sgtitle('Box plots for relative error',  'Interpreter','latex', 'FontSize',16)
 for model = 1:4
     subplot(2,2,model);
     set(gca,'FontSize',12)
-    boxplot(err_array(:,1:3,model), {'AMLE (proposed)', 'OLS', 'TLS'})%, 'FontSize',16); %'Interpreter','latex','
-    %title('Box plot for relative error $\left(\frac{\|\mathbf{x}_{EST} - \mathbf{x}_{TRU}\|}{\|\mathbf{x}_{TRU}\|}\right)$', ... 
-    %    'Interpreter', 'latex','FontSize',18);
+    boxplot(err_array(:,1:3,model), {'AML (proposed)', 'OLS', 'TLS'})
     title(model_names{model}, 'Interpreter', 'latex','FontSize',16);
     ax = gca;
     if model == 1 || model == 3
@@ -29,10 +24,6 @@ for model = 1:4
     grid on
 end
 set(gcf,'color','w')
-
-
-
-
 
 
 
@@ -58,7 +49,7 @@ for model = 1:4
     ylabel(chart_names{model}, 'Interpreter','latex', 'FontSize', 16);
     grid on
     if 2*(model-1)+1 == 1
-        title('AMLE over OLS', 'Interpreter', 'latex', 'FontSize', 14)
+        title('AML over OLS', 'Interpreter', 'latex', 'FontSize', 14)
     end
     if 2*(model-1)+1 ~=7
         set(gca, 'XTickLabel',[]);
@@ -77,7 +68,7 @@ for model = 1:4
     h2.Parent.YLim = [newLimLo newLimHi];
     
     if 2*model == 2
-        title('AMLE over TLS',  'Interpreter', 'latex', 'FontSize', 14)
+        title('AML over TLS',  'Interpreter', 'latex', 'FontSize', 14)
     end
     if 2*model ~=8
         set(gca, 'XTickLabel',[]);
@@ -89,10 +80,7 @@ for k = 1:4
     subplot(4,2,2*(k-1)+1); ylim([newLimLo 1500]); 
     plot([1, 1], [0, 1500], 'LineWidth',1.5, 'color', 'red')
     subplot(4,2,2*k); ylim([newLimLo 1000]); 
-    plot([1 1], [0 1500],'LineWidth',1.5, 'color', 'red')
-    %subplot(4,2,2*(k-1)+1); ylim([newLimLo newLimHi]);
-    %subplot(4,2,2*k); ylim([newLimLo newLimHi]);
-    
+    plot([1 1], [0 1500],'LineWidth',1.5, 'color', 'red')    
 end
 
 set(gcf,'color','w')
