@@ -11,7 +11,7 @@ function [f,g] = float_neg_loglikelihood(y, H, x, D, sigma)
     A = D.*(t*x');
     V = log(sinh(A) ./ A);
     idx = (abs(V)==Inf);
-    V(idx) = abs(A(idx)) - log(abs(2*A(idx))); 
+    V(idx) = abs(A(idx)) - log(abs(2*A(idx))); % is this the correct Taylor expansion??? Double check 
     K = 0.5*sigma^2*(t.^2) + t.*(H*x) + V*ones(n,1);
     Kpp = qp(t);
   

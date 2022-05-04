@@ -64,7 +64,8 @@ function grad_l = log_likelihood_grad(y, H, A, x, t, sigma, lambda)
     
     Kp      = sigma^2*t + H*x + (A.*S./F)*x;
     Kpp     = sigma^2*ones(m,1) + (A./F.^2)*x_sq;
-    Kppp    = 2*(A.*S./F.^3)*x_cb;
+    Kppp    = 2*(A.*S./F.^3)*x_cb; 
+    
     
     dK_dx   = (t*ones(1,n)).*(H + A.*S./F);
     dKp_dx  = H + A.*(S./F + (t*x')./F.^2);

@@ -87,8 +87,8 @@ class loglikelihood:
             poles = np.asarray(poles)
             posp = np.min(poles[poles>0]) if poles[poles>0].shape[0] > 0 else np.inf
             negp = np.max(poles[poles<0]) if poles[poles<0].shape[0] > 0 else -np.inf
-            a0 = -9
-            b0 = 10
+            a0 = -9e6
+            b0 = 10e6
 
             # solve saddle point equation using data for the ith point and store in a vector
             t_y = newton_safe(Kp_minus_y, Kpp, a0, b0, [negp, posp])
@@ -126,6 +126,17 @@ class loglikelihood:
 
         
     def cgf(self, distribution, parameters, h, x, t):
+        
+        ### DEGENERATE/INTERCEPT PARAMETER
+        if distribution == 'constant':
+            K = h*x*t
+            Kp = h*x
+            Kpp = 0
+            Kppp = 0
+            dK_dx = h*t
+            dKp_dx = h
+            dKpp_dx = 0
+
         ### UNIFORM 
         if distribution == 'uniform':
             if len(parameters) != 1:
@@ -134,8 +145,8 @@ class loglikelihood:
                 delta = parameters[0]
 
             k = delta*x
-            if abs(k*t) < 0.001:
-                # use taylor expansion when t is small enough 
+            if abs(k*t) < 0.01:
+                # use taylor expansion when k*t is small enough 
                 K = h*t*x + (k*t)**2/6 - (k*t)**4/72 + (k*t)**6/648
                 Kp = h*x + (k**2)*t/3 - (k**4)*(t**3)/18 + (k**6)*(t**5)/108
                 Kpp = (k**2)/3 - (k**4)*(t**2)/6 + 5*(k**6)*(t**4)/108
@@ -256,7 +267,7 @@ def newton_safe(f, df, a0, b0, poles):
 
     a = poles[0]+1e-5 if poles[0] > a0 else a0
     b = poles[1]-1e-5 if poles[1] < b0 else b0
-    tol = 1.0e-7  #must be small for uniform with rounding error level noise
+    tol = 1.0e-7  # must be small for uniform with rounding error level noise
 
     maxit = 100
     root_found = False
@@ -307,7 +318,6 @@ def newton_safe(f, df, a0, b0, poles):
         else:
             root_found = True
     
-    #print('Root at', myroot, 'with function value', f(myroot),'after',it, 'iterations')
     return myroot
 
 
@@ -333,3 +343,17 @@ def bisect_interval(f, a, b):
         
     return a, b
 
+
+
+def TLS(A,b):
+    m, n = A.shape
+    C = np.hstack((A,b.reshape(m,1)))
+    
+    # unlike matlab, numpy returns V.T
+    _, _, Vt = np.linalg.svd(C)
+
+    # take last row (smallest singular vector)
+    v = Vt[-1,:]
+    x_tls = -(1/v[-1])*v[:-1]
+
+    return x_tls

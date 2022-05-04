@@ -79,6 +79,7 @@ def test_uniform_and_laplace():
     # Getting errors here, focus on uniform first
     accuracy = 0                    # round to the "accuracy" place
     delta = 0.5*10**(-accuracy)     # this is the level of rounding requested
+    
     # initialize regression problem 
     Htrue = np.random.uniform(-10, 10, (m,n))   # establish true H (using uniform here)
     H = np.round(Htrue, accuracy)               # round using accuracy to get observed design
@@ -86,6 +87,7 @@ def test_uniform_and_laplace():
     y = ytrue + np.random.laplace(0,1,(m,))     # and Laplacian noise in this case
     dist_list = []
     param_list = []
+    
     # set distributions for the regression problem 
     for j in range(n):
         dist_list.append('uniform')    

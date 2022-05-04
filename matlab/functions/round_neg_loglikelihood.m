@@ -18,7 +18,11 @@ function [f,g] = round_neg_loglikelihood(y, H, x, c, sigma)
     
     % address overflow issues with Taylor approximation
     idx = (abs(V)==Inf);
-    V(idx) = abs(M(idx)) - log(abs(2*M(idx)));
+    V(idx) = abs(M(idx)) - log(abs(2*M(idx)));  % is this the correct taylor expansion??? Double check
+    % Note that this is supposed to be a Taylor approximation but seems to be incorrect.
+    % When t is small for uniform noise, we have the following
+    % K_unif(dtx) = 
+    
     
     % set cumulant generating funciton vector and its 2nd derivative
     K = 0.5*sigma^2*(t.^2) + t.*(H*x) + V*ones(n,1);
