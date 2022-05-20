@@ -960,8 +960,8 @@ for i = 1:maxIter
     end
 
     if ~isLegal(d)
-        fprintf('Step direction is illegal (Richie change to pause 0.5 seconds!)\n');
-        pause(0.5);
+        %fprintf('Step direction is problematic (Richie change to pause 0.5 seconds!)\n');
+        %pause(0.5);
         return
     end
 

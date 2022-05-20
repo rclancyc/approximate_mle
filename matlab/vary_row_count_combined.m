@@ -1,5 +1,5 @@
 clear;
-addpath('functions') 
+addpath(genpath('functions')) 
 
 
 opts.Display = 'off';

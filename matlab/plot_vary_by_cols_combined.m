@@ -1,3 +1,4 @@
+addpath(genpath('functions'))
 
 if ~exist('mean_error_array','var')
     load('data/vary_cols_error_array.mat')
@@ -50,43 +51,4 @@ clrz = get(abc, 'Color');
 c2 = clrz{2};
 c3 = clrz{3};
 set(gcf, 'color', 'w')
-
-
-%%
-
-figure()
-sgtitle(strcat(use_avg,' error ratio vs. column count'),  'Interpreter','latex', 'FontSize',18)
-for model = 1:4
-    subplot(2,2,model)
-    if exist('colorOrder')
-        co = colorOrder( 'highcontrast');
-        set(groot,'defaultAxesColorOrder',co); set(gca,'defaultAxesColorOrder',co); set( gca, 'ColorOrder', co );
-    end
-    
-    loglog(ns, err_ratio(:,1,model), 'Marker', 'x', 'LineWidth', 3,...
-        'Color', c2, 'MarkerSize', 10,'LineStyle','--');
-    hold on;
-    loglog(ns, err_ratio(:,2,model), 'Marker', '+', 'LineWidth', 3, 'Color', c3, 'MarkerSize', 10,'LineStyle',':');
-    ax = gca;
-    set(ax, 'FontSize', 12)
-    title(model_names{model}, 'Interpreter','latex', 'FontSize',16);
-    if model == 1 || model == 3
-        ylabel('Error ratio','Interpreter','latex', 'FontSize',16);
-    end
-    if model == 3 || model == 4
-        xlabel('Number of columns', 'Interpreter','latex', 'FontSize',16);
-    end
-    if model == 2
-        legend({'$\frac{\|\mathbf{x}_{OLS} - \mathbf{x}_{TRU}\|}{\|\mathbf{x}_{AML} - \mathbf{x}_{TRU}\|} \quad$', ...
-                '${\frac{\|\mathbf{x}_{TLS} - \mathbf{x}_{TRU}\|}{\|\mathbf{x}_{AML} - \mathbf{x}_{TRU}\|}}$'},...
-                'FontSize', 16,'Interpreter','latex', 'Location', 'northwest',...
-                'Orientation', 'vertical')
-        legend boxoff
-    end
-   
-    grid on
-end
-set(gcf, 'color', 'w')
-
-
 

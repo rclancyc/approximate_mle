@@ -1,4 +1,5 @@
 clear;
+addpath(genpath('functions'))
 
 opts.Display = 'off';
 opts.Verbose = 'on';
@@ -174,4 +175,5 @@ save('data/vary_cols_error_array.mat', 'mean_error_array', ...
 %%
 
 plot_vary_by_cols_combined
+
 

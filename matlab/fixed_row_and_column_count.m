@@ -1,6 +1,5 @@
 clear;
 addpath(genpath('functions'))
-%addpath('functions/minFunc_2012/minFunc')
 
 opts.Display = 'off';
 opts.Verbose = 'on';
@@ -89,3 +88,7 @@ save('data2/data_for_histograms', 'err_array', 'M', 'N', 'model_names')
 
 %%
 plot_fixed_row_and_column_count
+
+
+
+

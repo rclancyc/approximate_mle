@@ -3,7 +3,7 @@ if ~exist('err_array', 'var')
 end
 
 
-figure()
+figure();
 if exist('colorOrder')
     co = colorOrder( 'highcontrast');
     set( gca, 'ColorOrder', co );
