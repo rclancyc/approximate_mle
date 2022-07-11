@@ -82,7 +82,7 @@ for model = 1:4
         
 end
 
-save('data2/data_for_histograms', 'err_array', 'M', 'N', 'model_names')
+save('data/data_for_histograms', 'err_array', 'M', 'N', 'model_names')
 
 
 

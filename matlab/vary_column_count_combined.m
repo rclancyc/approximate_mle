@@ -140,7 +140,7 @@ for model = 1:4
             xtls_res(ii, jj) = norm(G*xtls  - y);
             xmle_res(ii, jj) = norm(G*xmle  - y);
             if opts.Verbose
-                fprintf('Sim %i \t || \t %4.6f \t || \t %4.6f \t || \t %4.6f \n', ...
+                fprintf('Sim %i \t || \t %4.6f \t || \t %4.6f \t` || \t %4.6f \n', ...
                     ii, norm(xmle  - xtrue), norm(xols  - xtrue), norm(xtls - xtrue))      
             end
         end
