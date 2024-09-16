@@ -24,7 +24,7 @@ The `functions` folder includes helper functions used to generate data such as N
 
 ## To run....
 
-Navigate to the directory where the files are located then just run the respective script. Corresponding plotting routines will be executed at the bottom of each script. 
+Navigate to the directory where the files are located then run the desired script. Corresponding plotting routines will execute at the bottom of each script. 
 
 
 # Python Code
