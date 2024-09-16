@@ -1,3 +1,5 @@
+[![DOI](https://zenodo.org/badge/351828358.svg)](https://zenodo.org/doi/10.5281/zenodo.13761539)
+
 # approximate_mle
 Numerical experiments for approximate maxmimum likelihood estimation based on saddle point approximations. 
 
